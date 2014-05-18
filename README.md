@@ -45,9 +45,11 @@ case, it will keep the last backup (so the last backup of the day or month).
 Restore
 -------
 
-The script `restore-full-system.sh` is a not user friendly for the moment.<br>
-You have to modify the "SOURCE" constant for the backup path you want to
-restore.
+`restore-full-system.sh BACKUP_DIR`, where `BACKUP_DIR` is the path of the
+backup you want to restore (and not the TARGET_DIR you have set in
+`backup-full-system.sh`).
+
+Use the option `-h` to print the help.
 
 Configuration
 -------------
