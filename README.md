@@ -13,11 +13,11 @@ Backup
 
 Backups are made with the `backup-full-system.sh` script.It sorts all your
 backups in this architecture :
-backups_dir/year/month/day-month-year-hour:minute:second/.
+backups_dir/year/month/day-month-year-hour:minute:second/.<br>
 A symbolic link is created at the backups dir root, named `current_backup`,
-which points on the last backup.
+which points on the last backup.<br>
 It calls the `delete-old-backups.sh` to clean your old backups. See the
-appropriate section for more informations
+appropriate section for more informations.
 
 If you want to use this script in a cronjob (for example), you might want to
 log everything, to see if there an error happened during the backup or
@@ -45,15 +45,15 @@ case, it will keep the last backup (so the last backup of the day or month).
 Restore
 -------
 
-The script `restore-full-system.sh` is a not user friendly for the moment.
+The script `restore-full-system.sh` is a not user friendly for the moment.<br>
 You have to modify the "SOURCE" constant for the backup path you want to
 restore.
 
 Configuration
 -------------
 
-Configurations are note synced between the scripts (yet), so you have to modify
-the constants in each scripts to configure it correctly.
+Configurations are not synced between the scripts (yet), so you have to modify
+the constants in each scripts to configure it correctly.<br>
 **ATTENTION**: If you are doing a backup, do not forget to configure the
 `delete-old-backups.sh` script to delete the old scripts. It can be dangerous
 to let it unconfigured, as it can delete some files in thinking it's backups
