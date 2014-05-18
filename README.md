@@ -46,20 +46,16 @@ Restore
 -------
 
 `restore-full-system.sh BACKUP_DIR`, where `BACKUP_DIR` is the path of the
-backup you want to restore (and not the TARGET_DIR you have set in
-`backup-full-system.sh`).
+backup you want to restore (not to confound with the `BACKUPS_BASE_DIR` you
+have set in the configuration file).
 
 Use the option `-h` to print the help.
 
 Configuration
 -------------
 
-Configurations are not synced between the scripts (yet), so you have to modify
-the constants in each scripts to configure it correctly.<br>
-**ATTENTION**: If you are doing a backup, do not forget to configure the
-`delete-old-backups.sh` script to delete the old scripts. It can be dangerous
-to let it unconfigured, as it can delete some files in thinking it's backups
-(if you are really unlucky).
+Copy the `easy-incremental-backups.conf.default` configuration file as
+`easy-incremental-backups.conf` and modify it for your setup.
 
-Just modify the *CONFIGURATION* section of each script, each constant is
-documented.
+**Do not edit directly this file, always make a copy before, it will avoid some
+conflits with git if you pull from this repository**
