@@ -3,18 +3,16 @@
 # Backup full system with rsync
 # By Anthony25
 
-#################
-# CONFIGURATION #
-#################
+SCRIPT_DIR="$( cd "$( dirname "$0"  )" && pwd  )"
 
-# TARGET will be "/" if you are restoring a full system backup
-TARGET='/'
+# Change this line if the configuration file is not in the same directory that
+# this script
+CONFIGURATION_FILE="$SCRIPT_DIR"/easy-incremental-backups.conf
 
-# EXCLUDE is the ignore list.
-EXCLUDE='{/dev/*,/proc/*,/sys/*,/tmp/*,/run/*,/mnt/*,/media/*,/lost+found,'
-EXCLUDE=$EXCLUDE'/home/*/.gvfs,/srv/ftp/*/*,/srv/nfs/*/*,/var/cache/pacman/*}'
-
-#################
+# Use the configuration file
+source "$CONFIGURATION_FILE"
+TARGET="$PATH_TO_BACKUP"
+EXCLUDE="$EXCLUDE"
 
 
 print_help()
@@ -40,6 +38,13 @@ do
             ;;
     esac
 done
+
+# Check if the configuration file exists
+if [ ! -e "$CONFIGURATION_FILE" -o ! -r "$CONFIGURATION_FILE" ]
+    then echo -e "ERROR: Configuration file not found\n"
+    print_help
+    exit 1
+fi
 
 # SOURCE is the backup directory
 SOURCE='/mnt/sda1/Backup/current_backup'

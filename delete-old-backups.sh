@@ -5,14 +5,15 @@
 # backup by month.
 # By Anthony25
 
-#################
-# CONFIGURATION #
-#################
+SCRIPT_DIR="$( cd "$( dirname "$0"  )" && pwd  )"
 
-# TARGET_ROOT is the backup directory
-TARGET_ROOT='/mnt/sda1/Backup'
+# Change this line if the configuration file is not in the same directory that
+# this script
+CONFIGURATION_FILE="$SCRIPT_DIR"/easy-incremental-backups.conf
 
-#################
+# Use the configuration file
+source "$CONFIGURATION_FILE"
+TARGET_ROOT="$BACKUPS_BASE_DIR"
 
 
 get_day()
@@ -102,6 +103,13 @@ dirs_to_delete()
         done
     done
 }
+
+
+# Check if the configuration file exists
+if [ ! -e "$CONFIGURATION_FILE" -o ! -r "$CONFIGURATION_FILE" ]
+    then echo -e "ERROR: Configuration file not found\n"
+    exit 1
+fi
 
 dirs_to_delete=$(dirs_to_delete)
 

@@ -3,27 +3,17 @@
 # Backup full system with rsync
 # By Anthony25
 
-#################
-# CONFIGURATION #
-#################
+SCRIPT_DIR="$( cd "$( dirname "$0"  )" && pwd  )"
 
-# Set the following constants depending on your configuration.
+# Change this line if the configuration file is not in the same directory that
+# this script
+CONFIGURATION_FILE="$SCRIPT_DIR"/easy-incremental-backups.conf
 
-# TARGET_ROOT is the backup directory
-TARGET_ROOT='/mnt/sda1/Backup'
-
-# Let SOURCE at "/*" if you want to do a backup of all the system. Rsync is
-# launched with the "-x" option, so it will stay in the "/" filesystem. If you
-# have separated partitions, like home directory, add "/home to SOURCE"
-SOURCE='/'
-
-# EXCLUDE is the ignore list. Rsync is launched with the "-x" option, so it
-# mights not fell into a loop (like in doing a backup of the disk where the
-# backup is stored), but I usually add it in precaution
-EXCLUDE='{/dev/*,/proc/*,/sys/*,/tmp/*,/run/*,/mnt/*,/media/*,/lost+found,'
-EXCLUDE=$EXCLUDE'/home/*/.gvfs,/srv/ftp/*/*,/srv/nfs/*/*,/var/cache/pacman/*}'
-
-#################
+# Use the configuration file
+source "$CONFIGURATION_FILE"
+TARGET_ROOT="$BACKUPS_BASE_DIR"
+SOURCE="$PATH_TO_BACKUP"
+EXCLUDE="$EXCLUDE"
 
 # TARGET_ROOT_EXTEND : class your backups by year and months
 TARGET_ROOT_EXTEND="$TARGET_ROOT/$(date '+%Y')/$(date '+%m')"
@@ -34,8 +24,6 @@ TARGET_NAME="$(date '+%d-%m-%Y-%T')"
 
 TARGET="$TARGET_ROOT_EXTEND/$TARGET_NAME"
 CHANGELOG="$CHANGELOG_ROOT/${TARGET_NAME}.txt"
-
-SCRIPT_DIR="$( cd "$( dirname "$0"  )" && pwd  )"
 
 
 interactive_changelog()
@@ -81,30 +69,40 @@ do
     esac
 done
 
+# Check if the configuration file exists
+if [ ! -e "$CONFIGURATION_FILE" -o ! -r "$CONFIGURATION_FILE" ]
+    then echo -e "ERROR: Configuration file not found\n"
+    print_help
+    exit 1
+fi
+
 # Check if SOURCE or TARGET exists, are writable and readable
-if [ ! -e $TARGET_ROOT  -o ! -r $TARGET_ROOT -o ! -w $TARGET_ROOT ]
+if [ ! -e "$TARGET_ROOT"  -o ! -r "$TARGET_ROOT" -o ! -w "$TARGET_ROOT" ]
     then echo "$TARGET_ROOT could not be read or written"
-    exit 0
+    exit 2
 fi
 
 echo "$(date "+%b %e %T") : Backup started"
 
 # Delete old backups
-eval "$SCRIPT_DIR/delete-old-backups.sh"
+eval ""$SCRIPT_DIR"/delete-old-backups.sh"
 
 if [ "$INTERACTIVE_CHANGELOG" = "1" ]
     then interactive_changelog
 fi
 
-if [ ! -d $TARGET_ROOT_EXTEND ]
+if [ ! -d "$TARGET_ROOT_EXTEND" ]
     then mkdir -p "$TARGET_ROOT_EXTEND"
 fi
 
-# If the symlink current exists, it makes an incremental backup, otherwise it creates the first backup
+# If the symlink current exists, it makes an incremental backup, otherwise
+# it creates the first backup
 last="$TARGET_ROOT/current_backup"
 
 if [ -L $last ]
-    then eval "rsync -aAxXH --delete --link-dest=$last $SOURCE $TARGET --exclude=$EXCLUDE"
+    then rsync_line="rsync -aAxXH --delete --link-dest=$last $SOURCE "$TARGET""
+    rsync_line="$rsync_line --exclude=$EXCLUDE"
+    eval "$rsync_line"
     rm -f $last
 
 else

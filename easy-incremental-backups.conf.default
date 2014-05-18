@@ -1,0 +1,21 @@
+#
+# Do not modify directly this file, please make a copy as
+# easy-incremental-backups.conf. It will avoid some conflicts if you pull from
+# the git repository.
+#
+# Easy Incremental Backups configuration file
+#
+
+# BACKUPS_BASE_DIR is the backup base directory. It is the directory where all
+# the backups are saved.
+BACKUPS_BASE_DIR='/mnt/sda1/Backup'
+
+# Path you want to backup. "/" will backup the entire system (except mounted
+# disks)
+PATH_TO_BACKUP='/'
+
+# EXCLUDE is the ignore list. Rsync is launched with the "-x" option, so it
+# mights not fell into a loop (like in doing a backup of the disk where the
+# backup is stored), but I usually add it in precaution
+EXCLUDE='{/dev/*,/proc/*,/sys/*,/tmp/*,/run/*,/mnt/*,/media/*,/lost+found,'
+EXCLUDE=$EXCLUDE'/home/*/.gvfs}'
