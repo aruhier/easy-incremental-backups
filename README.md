@@ -6,7 +6,7 @@ Apple Time Machine, it can do incremental backups to avoid using unnecessary
 space.
 
 So rsync is a great tool to do backups, but it needs some additional features
-to make it really cool for system backups, and that the goal of those scripts.
+to make it really cool for system backups, and that the goal of these scripts.
 
 Backup
 ------
