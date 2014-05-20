@@ -16,6 +16,7 @@ PATH_TO_BACKUP='/'
 
 # EXCLUDE is the ignore list. Rsync is launched with the "-x" option, so it
 # mights not fell into a loop (like in doing a backup of the disk where the
-# backup is stored), but I usually add it in precaution
+# backup is stored), but I usually add it in precaution.
+# BACKUPS_BASE_DIR is automatically excluded.
 EXCLUDE='{/dev/*,/proc/*,/sys/*,/tmp/*,/run/*,/mnt/*,/media/*,/lost+found,'
 EXCLUDE=$EXCLUDE'/home/*/.gvfs}'

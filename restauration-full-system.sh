@@ -87,4 +87,6 @@ if [ ! -e "$TARGET"  -o ! -r "$TARGET" -o ! -w "$TARGET" ]
     exit 0
 fi
 
-eval "rsync -aAxXH --delete $SOURCE $TARGET --exclude=$EXCLUDE"
+rsync_line="rsync -aAxXH --delete $SOURCE $TARGET --exclude=$EXCLUDE"
+rsync_line="$rsync_line --exclude="$BACKUPS_BASE_DIR""
+eval "$rsync_line"

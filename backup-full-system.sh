@@ -128,12 +128,14 @@ last="$TARGET_ROOT/current_backup"
 
 if [ -L $last ]
     then rsync_line="rsync -aAxXH --delete --link-dest=$last $SOURCE "$TARGET""
-    rsync_line="$rsync_line --exclude=$EXCLUDE"
+    rsync_line="$rsync_line --exclude=$EXCLUDE --exclude="$TARGET_ROOT""
     eval "$rsync_line"
     rm -f $last
 
 else
-    eval "rsync -aAxXH --delete "$SOURCE" "$TARGET" --exclude=$EXCLUDE"
+    rsync_line="rsync -aAxXH --delete "$SOURCE" "$TARGET" --exclude=$EXCLUDE"
+    rsync_line="$rsync_line --exclude="$TARGET_ROOT""
+    eval "$rsync_line"
 fi
 
 cd $TARGET_ROOT
