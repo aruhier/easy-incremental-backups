@@ -103,9 +103,14 @@ last_30_days_imo_month()
     month=$2
     day=$3
 
-    backups=$(ls -d "$TARGET_ROOT/$year/$month/"[0-${day:0:1}][0-${day:1:2}]*\
-              2>/dev/null)
-    echo "$backups"
+    [[ $day ]] && if (( $day > 9 ))
+        then echo "$(ls -d "$TARGET_ROOT/$year/$month/"0[0-9]* 2>/dev/null)"
+        echo "$(ls -d "$TARGET_ROOT/$year/$month/"1[0-${day:1:2}]* \
+                2>/dev/null)"
+    else
+        echo "$(ls -d "$TARGET_ROOT/$year/$month/"0[0-${day:1:2}]* \
+                2>/dev/null)"
+    fi
 }
 
 dirs_to_delete()
