@@ -74,11 +74,18 @@ if [ ! -e "$CONFIGURATION_FILE" -o ! -r "$CONFIGURATION_FILE" ]
 fi
 
 # SOURCE is the backup directory
-SOURCE='/mnt/sda1/Backup/current_backup'
-if [ ! -e "$1" -o ! -r "$SOURCE" ]
+SOURCE=$1
+if [ ! -e "$SOURCE" -o ! -r "$SOURCE" ]
     then echo -e "Error: Please indicate a valid backup source\n"
     print_help
     exit 0
+fi
+
+# Checks if SOURCE ends with a '/'
+i=$((${#SOURCE}-1))
+last_char=${SOURCE:$i:1}
+if [ "$last_char" != "/" ]
+    then SOURCE=$SOURCE"/"
 fi
 
 # Check if TARGET exists, are writable and readable
