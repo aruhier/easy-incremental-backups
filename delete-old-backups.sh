@@ -104,12 +104,14 @@ last_30_days_imo_month()
     day=$3
 
     [[ $day ]] && if (( $day > 9 ))
-        then echo "$(ls -d "$TARGET_ROOT/$year/$month/"0[0-9]* 2>/dev/null)"
-        echo "$(ls -d "$TARGET_ROOT/$year/$month/"1[0-${day:1:2}]* \
+        then last_month=`expr ${day:0:1} - 1`
+        echo "$(ls -d "$TARGET_ROOT/$year/$month/"[0-${last_month}][0-9]* \
                 2>/dev/null)"
+        echo "$(ls -d "$TARGET_ROOT/$year/$month/"${day:0:1}[0-${day:1:2}]* \
+                2>/dev/null | head -n -1)"
     else
         echo "$(ls -d "$TARGET_ROOT/$year/$month/"0[0-${day:1:2}]* \
-                2>/dev/null)"
+                2>/dev/null | head -n -1)"
     fi
 }
 
